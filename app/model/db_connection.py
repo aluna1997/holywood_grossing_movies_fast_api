@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from app.logger import configure_log
 logger = configure_log()
 
-config_file_path = '/Users/mooncode/Documents/proyectos/holywood_grossing_movies_fast_api/app/cfg.cfg'
+config_file_path = '/Users/vn54e72/Documents/PERSONAL/proyectos/holywood_grossing_movies_fast_api/app/cfg.cfg'
 
 class DatabaseConnection:
 
