@@ -11,6 +11,36 @@ logger = configure_log()
 config_file_path = '/Users/vn54e72/Documents/PERSONAL/proyectos/holywood_grossing_movies_fast_api/app/cfg.cfg'
 
 class DatabaseConnection:
+    '''
+    Represents a utility class for managing database connections and sessions.
+
+    This class provides methods to configure and establish a database connection, create a SQLAlchemy
+    engine, and manage database sessions. It is intended for use with SQLAlchemy to simplify database
+    operations.
+
+    Attributes:
+        _engine: The SQLAlchemy engine used for connecting to the database.
+        _session: The active SQLAlchemy session.
+        _dialect: The database dialect (e.g., MySQL, PostgreSQL).
+        _user: The database username for authentication.
+        _passwd: The database password for authentication.
+        _ip: The IP address or hostname of the database server.
+        _port: The port number on which the database server is running.
+        _db: The name of the database to connect to.
+        _db_url: The complete database connection URL constructed from the above attributes.
+
+    Methods:
+        get_db_connection_config(): Reads database connection configuration from a config file and sets
+        class attributes such as dialect, user, password, IP, port, and database name.
+
+        get_db_url(): Constructs the database connection URL using the configured attributes.
+
+        get_engine(): Creates an SQLAlchemy engine based on the constructed database connection URL.
+
+        get_session(): Creates an SQLAlchemy session for database interactions using the established engine.
+
+        close_session(): Closes the active session and disposes of the engine, resetting class attributes.
+    '''
 
     def __init__(self):
         self._engine = None

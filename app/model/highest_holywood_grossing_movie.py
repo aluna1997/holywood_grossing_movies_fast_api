@@ -6,6 +6,30 @@ from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 # SqlAlchemy Class.
 class HighestHolywoodGrossingMovie(Base):
+    '''
+    Represents a model for the highest Hollywood grossing movie in a database.
+
+    This class defines the structure of the "highest_hollywood_grossing_movie" table,
+    including its columns, relationships, and default values.
+
+    Attributes:
+        id_movie (int): The primary key for the movie record.
+        title (str): The title of the movie.
+        movie_info (str): Information about the movie.
+        distributor (str): The distributor of the movie.
+        release_date (str): The release date of the movie.
+        domestic_sales (int): The domestic sales of the movie.
+        international_sales (int): The international sales of the movie.
+        world_sales (int): The worldwide sales of the movie.
+        genre (str): The genre of the movie.
+        movie_runtime (str): The runtime of the movie.
+        license (str): The license associated with the movie.
+        creation_date (datetime): The timestamp of when the record was created.
+        active (int): Flag indicating the status of the movie record (default is 1, which means active).
+
+    Relationships:
+        sponsors (relationship): A relationship to the "Sponsor" model, indicating sponsors associated with the movie.
+    '''
     __tablename__ = "highest_holywood_grossing_movie"
 
     id_movie = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
