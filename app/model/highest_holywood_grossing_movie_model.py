@@ -192,6 +192,9 @@ def delete_highest_holywood_grossing_movie(session,id_movie):
         raise err
     
 if __name__ == "__main__":
-    db_conn = DatabaseConnection()
-    session = db_conn.get_session()
-    db_conn.close_session()
+    #db_conn = DatabaseConnection()
+    #session = db_conn.get_session()
+    #db_conn.close_session()
+
+    from app.model.pydantic_sqlalchemy.highest_holywood_grossing_movie import PydanticHighestHolywoodGrossingMovie
+    print(type(PydanticHighestHolywoodGrossingMovie.__dict__))

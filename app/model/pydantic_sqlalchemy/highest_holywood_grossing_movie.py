@@ -1,7 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, text
 from sqlalchemy.orm import relationship
 from app.model.pydantic_sqlalchemy.base import Base
+from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
+
+# SqlAlchemy Class.
 class HighestHolywoodGrossingMovie(Base):
     __tablename__ = "highest_holywood_grossing_movie"
 
@@ -20,4 +23,7 @@ class HighestHolywoodGrossingMovie(Base):
     active = Column(SmallInteger, nullable=False, default=1)
 
     # Relations.
-    sponsors = relationship('Sponsor', back_populates="movie")
+    sponsors = relationship('Sponsor', back_populates="movie", cascade="all, delete, delete-orphan")
+
+# Pydantic Class.
+PydanticHighestHolywoodGrossingMovie = sqlalchemy_to_pydantic(HighestHolywoodGrossingMovie)

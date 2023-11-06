@@ -2,6 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, SmallInteg
 from sqlalchemy.orm import relationship
 from app.model.pydantic_sqlalchemy.base import Base
 
+# SqlAlchemy Class.
 class Sponsor(Base):
     __tablename__ = "sponsor"
     
@@ -14,3 +15,6 @@ class Sponsor(Base):
 
     # Relations.
     movie = relationship('HighestHolywoodGrossingMovie', back_populates='sponsors')
+
+# Pydantic Class.
+PydanticSponsor = sqlalchemy_to_pydantic(Sponsor)
