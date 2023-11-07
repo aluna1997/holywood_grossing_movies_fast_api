@@ -1,17 +1,20 @@
-from app.model.db_connection import DatabaseConnection
+from app.services.db_connection import DatabaseConnection
 from app.model.pydantic_sqlalchemy.sponsor import Sponsor
 from app.model.pydantic_sqlalchemy.highest_holywood_grossing_movie import HighestHolywoodGrossingMovie
-
 from datetime import datetime
-
-# Logger.
 from app.logger import configure_log
+
+# Typing
+from typing import Dict
+from typing import Union
+from typing import List
+from sqlalchemy.orm import Session
+
+# Globals.
 logger = configure_log()
+optionals: list = ['id_movie','creation_date','active']
 
-# GLOBALS
-optionals = ['id_movie','creation_date','active']
-
-def create_highest_holywood_grossing_movie(session,info_movie):
+def create_highest_holywood_grossing_movie(session: Session,info_movie: Dict) -> Union[int,Exception]:
     '''
     Create a new entry for the Highest Hollywood Grossing Movie.
 
@@ -53,7 +56,7 @@ def create_highest_holywood_grossing_movie(session,info_movie):
         logger.error(str_err)
         raise err
     
-def read_highest_holywood_grossing_movie(session,id_movie = False):
+def read_highest_holywood_grossing_movie(session: Session,id_movie: int = False) -> Union[List[HighestHolywoodGrossingMovie], HighestHolywoodGrossingMovie, Exception]:
     '''
     Retrieve Highest Hollywood Grossing Movies from the database.
 
@@ -98,7 +101,7 @@ def read_highest_holywood_grossing_movie(session,id_movie = False):
 
     return movies
 
-def update_highest_holywood_grossing_movie(session,id_movie,info_movie):
+def update_highest_holywood_grossing_movie(session: Session,id_movie: int,info_movie: Dict) -> Union[int, Exception]:
     '''
     Update an existing Highest Hollywood Grossing Movie in the database.
 
@@ -151,7 +154,7 @@ def update_highest_holywood_grossing_movie(session,id_movie,info_movie):
         logger.error(str_err)
         raise err
 
-def delete_highest_holywood_grossing_movie(session,id_movie):
+def delete_highest_holywood_grossing_movie(session: Session,id_movie: int) -> [int, Exception]:
     '''
     Delete a Highest Hollywood Grossing Movie from the database.
 
@@ -190,11 +193,3 @@ def delete_highest_holywood_grossing_movie(session,id_movie):
         str_err = f'Ocurrió un error al eliminar HighestHolywoodGrossingMovie: {str(err)}.'
         logger.error(str_err)
         raise err
-    
-if __name__ == "__main__":
-    #db_conn = DatabaseConnection()
-    #session = db_conn.get_session()
-    #db_conn.close_session()
-
-    from app.model.pydantic_sqlalchemy.highest_holywood_grossing_movie import PydanticHighestHolywoodGrossingMovie
-    print(type(PydanticHighestHolywoodGrossingMovie.__dict__))

@@ -1,17 +1,20 @@
 from app.model.db_connection import DatabaseConnection
 from app.model.pydantic_sqlalchemy.sponsor import Sponsor
 from app.model.pydantic_sqlalchemy.highest_holywood_grossing_movie import HighestHolywoodGrossingMovie
-
 from datetime import datetime
-
-# Logger.
 from app.logger import configure_log
-logger = configure_log()
 
-# GLOBALS
+# Typing.
+from typing import Dict
+from typing import Union
+from typing import List
+from sqlalchemy.orm import Session
+
+# Globals.
+logger = configure_log()
 optionals = ['id_sponsor','creation_date','active']
 
-def create_sponsor(session,info_sponsor):
+def create_sponsor(session: Session,info_sponsor: Dict) -> Union[int,Exception]:
     '''
     Create a new sponsor in the database.
 
@@ -52,7 +55,7 @@ def create_sponsor(session,info_sponsor):
         logger.error(str_err)
         raise err
     
-def read_sponsor(session,id_sponsor = False):
+def read_sponsor(session: Session,id_sponsor: int = False) -> [List[Sponsor], Sponsor, Exception]:
     '''
     Retrieve sponsors from the database.
 
@@ -97,7 +100,7 @@ def read_sponsor(session,id_sponsor = False):
 
     return sponsors
 
-def update_sponsor(session,id_sponsor,info_sponsor):
+def update_sponsor(session: Session,id_sponsor: int,info_sponsor: Dict) -> Union[int, Exception]:
     '''
     Update an existing sponsor in the database.
 
@@ -150,7 +153,7 @@ def update_sponsor(session,id_sponsor,info_sponsor):
         logger.error(str_err)
         raise err
 
-def delete_sponsor(session,id_sponsor):
+def delete_sponsor(session: Session,id_sponsor: int) -> Union[int, Exception]:
     '''
     Delete a sponsor from the database.
 
@@ -189,9 +192,3 @@ def delete_sponsor(session,id_sponsor):
         str_err = f'Ocurrió un error al eliminar Sponsor: {str(err)}.'
         logger.error(str_err)
         raise err
-    
-if __name__ == "__main__":
-    db_conn = DatabaseConnection()
-    session = db_conn.get_session()
-    print(read_sponsor(session=session))
-    db_conn.close_session()

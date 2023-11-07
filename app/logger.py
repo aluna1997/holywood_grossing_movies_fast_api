@@ -1,7 +1,7 @@
 from loguru import logger
 from datetime import datetime
 
-def configure_log():
+def configure_log() -> logger:
     '''
     Configures a logging system and returns the logger instance.
 
