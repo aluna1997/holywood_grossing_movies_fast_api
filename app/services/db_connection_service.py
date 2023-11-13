@@ -3,9 +3,9 @@ import configparser
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
-# Logger.
 from app.logger import configure_log
+
+# Globals.
 logger = configure_log()
 
 config_file_path = '/Users/vn54e72/Documents/PERSONAL/proyectos/holywood_grossing_movies_fast_api/app/cfg.cfg'

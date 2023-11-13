@@ -1,6 +1,6 @@
-from app.model.db_connection import DatabaseConnection
-from app.model.pydantic_sqlalchemy.sponsor import Sponsor
-from app.model.pydantic_sqlalchemy.highest_holywood_grossing_movie import HighestHolywoodGrossingMovie
+from app.services.db_connection_service import DatabaseConnection
+from app.model.sponsor_model import Sponsor
+from app.model.highest_holywood_grossing_movie_model import HighestHolywoodGrossingMovie
 from datetime import datetime
 from app.logger import configure_log
 

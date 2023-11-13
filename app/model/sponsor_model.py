@@ -1,6 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, SmallInteger, text
 from sqlalchemy.orm import relationship
-from app.model.pydantic_sqlalchemy.base import Base
+from app.model.base_model import Base
+from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 # SqlAlchemy Class.
 class Sponsor(Base):
@@ -36,4 +37,7 @@ class Sponsor(Base):
     movie = relationship('HighestHolywoodGrossingMovie', back_populates='sponsors')
 
 # Pydantic Class.
-PydanticSponsor = sqlalchemy_to_pydantic(Sponsor)
+def get_pydantic_sponsor():
+    from app.model.highest_holywood_grossing_movie_model import HighestHolywoodGrossingMovie
+    PydanticSponsor = sqlalchemy_to_pydantic(Sponsor)
+    return PydanticSponsor

@@ -1,7 +1,14 @@
 from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, text
 from sqlalchemy.orm import relationship
-from app.model.pydantic_sqlalchemy.base import Base
+from app.model.base_model import Base
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
+from app.logger import configure_log
+from typing import Optional
+from datetime import datetime
+from pydantic import validator
+
+# Globals.
+logger = configure_log()
 
 
 # SqlAlchemy Class.
@@ -47,7 +54,22 @@ class HighestHolywoodGrossingMovie(Base):
     active = Column(SmallInteger, nullable=False, default=1)
 
     # Relations.
-    sponsors = relationship('Sponsor', back_populates="movie", cascade="all, delete, delete-orphan")
+    sponsors = relationship('Sponsor', back_populates='movie', cascade='all, delete, delete-orphan')
 
 # Pydantic Class.
-PydanticHighestHolywoodGrossingMovie = sqlalchemy_to_pydantic(HighestHolywoodGrossingMovie)
+PydanticHighestHolywoodGrossingMovieAux = sqlalchemy_to_pydantic(HighestHolywoodGrossingMovie, exclude=['sponsors'])
+
+class PydanticHighestHolywoodGrossingMovie(PydanticHighestHolywoodGrossingMovieAux):
+    # Making the email attribute optional.
+    id_movie: Optional[int]
+    creation_date: Optional[datetime]
+    active: Optional[int]
+    
+    @validator('title')
+    def validate_title_length(cls, value):
+        logger.debug('entre')
+        logger.debug(value)
+        logger.debug(type(value))
+        if value and len(value) != 5:
+            raise ValueError("Title must be at least 5 characters long")
+        return value
