@@ -1,4 +1,4 @@
-from app.services.db_connection_service import DatabaseConnection
+from app.model.db_connection_object_model import DatabaseConnection
 from app.model.sponsor_model import Sponsor
 from app.model.highest_holywood_grossing_movie_model import HighestHolywoodGrossingMovie
 from datetime import datetime
