@@ -1,9 +1,9 @@
 import os
-import configparser
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.logger import configure_log
+from app.common.utils_common import get_value_from_config_file
 
 # Globals.
 logger = configure_log()
@@ -54,51 +54,44 @@ class DatabaseConnection:
         self._db_url = None
 
     def get_db_connection_config(self):
-        if not os.path.exists(config_file_path):
-            str_err = f'No existe archivo de configuracion: {config_file_path}.'
-            logger.error(str_err)
-            raise Exception(str_err)
         
-        config = configparser.ConfigParser()
-        config.read(config_file_path)
-
-        if config.has_option('DATABASE', 'dialect'):
-            self._dialect = config.get('DATABASE', 'dialect')
+        if get_value_from_config_file(section_name='DATABASE', value='dialect'):
+            self._dialect = get_value_from_config_file(section_name='DATABASE', value='dialect')
         else:
             str_err = "Debe indicar el dialecto de la base de datos en DATABASE -> dialect."
             logger.error(str_err)
             raise Exception(str_err)
         
-        if config.has_option('DATABASE', 'user'):
-            self._user = config.get('DATABASE', 'user')
+        if get_value_from_config_file(section_name='DATABASE', value='user'):
+            self._user = get_value_from_config_file(section_name='DATABASE', value='user')
         else:
             str_err = "Debe indicar el user de la base de datos en DATABASE -> user."
             logger.error(str_err)
             raise Exception(str_err)
         
-        if config.has_option('DATABASE', 'pass'):
-            self._passwd = config.get('DATABASE', 'pass')
+        if get_value_from_config_file(section_name='DATABASE', value='pass'):
+            self._passwd = get_value_from_config_file(section_name='DATABASE', value='pass')
         else:
             str_err = "Debe indicar el passwd de la base de datos en DATABASE -> passwd."
             logger.error(str_err)
             raise Exception(str_err)
         
-        if config.has_option('DATABASE', 'ip'):
-            self._ip = config.get('DATABASE', 'ip')
+        if get_value_from_config_file(section_name='DATABASE', value='ip'):
+            self._ip = get_value_from_config_file(section_name='DATABASE', value='ip')
         else:
             str_err = "Debe indicar el ip de la base de datos en DATABASE -> ip."
             logger.error(str_err)
             raise Exception(str_err)
         
-        if config.has_option('DATABASE', 'port'):
-            self._port = config.get('DATABASE', 'port')
+        if get_value_from_config_file(section_name='DATABASE', value='port'):
+            self._port = get_value_from_config_file(section_name='DATABASE', value='port')
         else:
             str_err = "Debe indicar el port de la base de datos en DATABASE -> port."
             logger.error(str_err)
             raise Exception(str_err)
         
-        if config.has_option('DATABASE', 'db'):
-            self._db = config.get('DATABASE', 'db')
+        if get_value_from_config_file(section_name='DATABASE', value='db'):
+            self._db = get_value_from_config_file(section_name='DATABASE', value='db')
         else:
             str_err = "Debe indicar el db de la base de datos en DATABASE -> db."
             logger.error(str_err)
