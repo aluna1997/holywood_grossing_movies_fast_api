@@ -2,6 +2,11 @@ from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, SmallInteg
 from sqlalchemy.orm import relationship
 from app.model.base_model import Base
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
+from app.logger import configure_log
+
+# Logger.
+logger = configure_log()
+
 
 # SqlAlchemy Class.
 class Sponsor(Base):

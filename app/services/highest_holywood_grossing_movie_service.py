@@ -10,9 +10,8 @@ from typing import Union
 from typing import List
 from sqlalchemy.orm import Session
 
-# Globals.
+# Logger.
 logger = configure_log()
-optionals: list = ['id_movie','creation_date','active']
 
 def create_highest_holywood_grossing_movie(session: Session,info_movie: Dict) -> Union[int,Exception]:
     '''
@@ -37,6 +36,7 @@ def create_highest_holywood_grossing_movie(session: Session,info_movie: Dict) ->
     1
     '''
     new_movie = HighestHolywoodGrossingMovie()
+    optionals: list = ['id_movie','creation_date','active']
 
     for key,value in info_movie.items():
         if (not value) and (key not in optionals):

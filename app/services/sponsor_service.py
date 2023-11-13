@@ -10,9 +10,8 @@ from typing import Union
 from typing import List
 from sqlalchemy.orm import Session
 
-# Globals.
+# Logger..
 logger = configure_log()
-optionals = ['id_sponsor','creation_date','active']
 
 def create_sponsor(session: Session,info_sponsor: Dict) -> Union[int,Exception]:
     '''
@@ -36,6 +35,7 @@ def create_sponsor(session: Session,info_sponsor: Dict) -> Union[int,Exception]:
     >>> create_sponsor(session, info)
     '''
     new_sponsor = Sponsor()
+    optionals = ['id_sponsor','creation_date','active']
 
     for key,value in info_sponsor.items():
         if (not value) and (key not in optionals):

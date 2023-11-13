@@ -7,7 +7,7 @@ from typing import Optional
 from datetime import datetime
 from pydantic import validator
 
-# Globals.
+# Logger.
 logger = configure_log()
 
 
@@ -60,11 +60,12 @@ class HighestHolywoodGrossingMovie(Base):
 PydanticHighestHolywoodGrossingMovieAux = sqlalchemy_to_pydantic(HighestHolywoodGrossingMovie, exclude=['sponsors'])
 
 class PydanticHighestHolywoodGrossingMovie(PydanticHighestHolywoodGrossingMovieAux):
-    # Making the email attribute optional.
+    # Making attributes optional.
     id_movie: Optional[int]
     creation_date: Optional[datetime]
     active: Optional[int]
     
+    # Business validations.
     @validator('title')
     def validate_title_length(cls, value):
         logger.debug('entre')
