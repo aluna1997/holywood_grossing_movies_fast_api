@@ -1,10 +1,13 @@
 import os
 import configparser
 
-from app.logger import configure_log
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends
+from fastapi import HTTPException
 from typing import Union
+from app.logger import configure_log
+from fastapi.responses import JSONResponse
+from common.globals_common import CONFIG_ROUTE
 
 # Logger.
 logger = configure_log()
@@ -87,3 +90,10 @@ def verify_token(token: str = Depends(oauth2_scheme)) -> Union[str,Exception]:
         str_err = 'No existe token en archivo de configuración.'
         logger.error(str_err)
         raise Exception(str_err)
+
+def return_endpoint_response(pyndatic_obj,stataus_code,message,extras = {},ok = True):
+    if ok:
+        return JSONResponse(content={'message': message, **pyndatic_obj.dict(), **extras}, status_code=stataus_code)
+    else:
+        raise HTTPException(status_code=stataus_code, detail=message)
+    

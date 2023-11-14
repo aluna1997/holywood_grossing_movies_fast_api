@@ -1,11 +1,13 @@
-from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, text
-from sqlalchemy.orm import relationship
-from app.model.base_model import Base
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
-from app.logger import configure_log
 from typing import Optional
 from datetime import datetime
 from pydantic import validator
+
+from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, text
+from sqlalchemy.orm import relationship
+
+from app.logger import configure_log
+from app.model.base_model import Base
 
 # Logger.
 logger = configure_log()
@@ -68,9 +70,6 @@ class PydanticHighestHolywoodGrossingMovie(PydanticHighestHolywoodGrossingMovieA
     # Business validations.
     @validator('title')
     def validate_title_length(cls, value):
-        logger.debug('entre')
-        logger.debug(value)
-        logger.debug(type(value))
-        if value and len(value) != 5:
-            raise ValueError("Title must be at least 5 characters long")
+        if value and len(value) < 5:
+            raise ValueError("Title must be at least 5 characters long.")
         return value

@@ -1,14 +1,14 @@
 from app.model.db_connection_object_model import DatabaseConnection
 from app.model.sponsor_model import Sponsor
 from app.model.highest_holywood_grossing_movie_model import HighestHolywoodGrossingMovie
-from datetime import datetime
-from app.logger import configure_log
 
-# Typing
 from typing import Dict
 from typing import Union
 from typing import List
+
 from sqlalchemy.orm import Session
+from datetime import datetime
+from app.logger import configure_log
 
 # Logger.
 logger = configure_log()

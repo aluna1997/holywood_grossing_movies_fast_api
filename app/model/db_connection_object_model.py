@@ -70,9 +70,10 @@ class DatabaseConnection:
         if get_value_from_config_file(section_name='DATABASE', value='pass'):
             self._passwd = get_value_from_config_file(section_name='DATABASE', value='pass')
         else:
-            str_err = "Debe indicar el passwd de la base de datos en DATABASE -> passwd."
-            logger.error(str_err)
-            raise Exception(str_err)
+            #str_err = "Debe indicar el passwd de la base de datos en DATABASE -> passwd."
+            #logger.error(str_err)
+            #raise Exception(str_err)
+            self._passwd = ''
         
         if get_value_from_config_file(section_name='DATABASE', value='ip'):
             self._ip = get_value_from_config_file(section_name='DATABASE', value='ip')
