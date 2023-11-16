@@ -2,6 +2,7 @@ from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 from typing import Optional
 from datetime import datetime
 from pydantic import validator
+from app.common.utils_common import datetime_to_iso
 
 from sqlalchemy import Column, Integer, String, DateTime, SmallInteger, text
 from sqlalchemy.orm import relationship
@@ -57,7 +58,19 @@ class HighestHolywoodGrossingMovie(Base):
 
     # Relations.
     sponsors = relationship('Sponsor', back_populates='movie', cascade='all, delete, delete-orphan')
-
+    
+    def dict(self):
+        aux = {}
+        for key,value in self.__dict__.items():
+            if key not in ['_sa_instance_state']:
+                if isinstance(value,datetime):
+                    aux[key] = datetime_to_iso(value)
+                else:
+                    aux[key] = value
+        return aux
+                
+        
+    
 # Pydantic Class.
 PydanticHighestHolywoodGrossingMovieAux = sqlalchemy_to_pydantic(HighestHolywoodGrossingMovie, exclude=['sponsors'])
 

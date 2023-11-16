@@ -9,6 +9,8 @@ from typing import List
 from sqlalchemy.orm import Session
 from datetime import datetime
 from app.logger import configure_log
+from app.common.globals_common import HIGHEST_HOLYWOOD_GROSSING_MOVIE_OPTIONALS
+from datetime import datetime
 
 # Logger.
 logger = configure_log()
@@ -36,10 +38,9 @@ def create_highest_holywood_grossing_movie(session: Session,info_movie: Dict) ->
     1
     '''
     new_movie = HighestHolywoodGrossingMovie()
-    optionals: list = ['id_movie','creation_date','active']
 
     for key,value in info_movie.items():
-        if (not value) and (key not in optionals):
+        if (not value) and (key not in HIGHEST_HOLYWOOD_GROSSING_MOVIE_OPTIONALS):
             str_err = f'{key} no puede ser vacío al crear un nuevo highest_holywood_grossing_movie.'
             logger.error(str_err)
             raise Exception(str_err)
@@ -56,7 +57,7 @@ def create_highest_holywood_grossing_movie(session: Session,info_movie: Dict) ->
         logger.error(str_err)
         raise err
     
-def read_highest_holywood_grossing_movie(session: Session,id_movie: int = False) -> Union[List[HighestHolywoodGrossingMovie], HighestHolywoodGrossingMovie, Exception]:
+def read_highest_holywood_grossing_movie(session: Session,id_movie: int) -> Union[List[HighestHolywoodGrossingMovie], HighestHolywoodGrossingMovie, Exception]:
     '''
     Retrieve Highest Hollywood Grossing Movies from the database.
 
@@ -93,6 +94,7 @@ def read_highest_holywood_grossing_movie(session: Session,id_movie: int = False)
     else:
         try:
             movies = session.get(HighestHolywoodGrossingMovie,id_movie)
+            movies = [movies]
         except Exception as err:
             session.rollback()
             str_err = f'Ocurrió un error al leer HighestHolywoodGrossingMovie: {str(err)}.'
@@ -132,19 +134,28 @@ def update_highest_holywood_grossing_movie(session: Session,id_movie: int,info_m
         raise Exception(str_err)
     
     movie = session.get(HighestHolywoodGrossingMovie,id_movie)
-
+    
     if not movie:
         str_err = 'El id a actualizar no existe, no se actualiza nada.'
         logger.error(str_err)
         raise Exception(str_err)
-
-    for key,value in info_movie.items():
+    
+    for key,value in info_movie.items():    
         if getattr(movie, key, None):
             setattr(movie, key, value)
-        else:
-            logger.warning(f'El atributo {key} no existe para el objeto de highest_holywood_grossing_movie, se ignora.')
-
+    
+    # Optional params that not in the body.
+    if (movie.id_movie != None) and (movie.id_movie != id_movie):
+        logger.warning('El id_movie enviado es distinto al que se va a actualizar.')
+    
+    if movie.active == None:
+        movie.active = 1
+    
+    if movie.creation_date == None:
+        movie.creation_date = datetime.now()
+            
     try:
+        movie.id_movie = id_movie
         session.add(movie)
         session.commit()
         return movie.id_movie
@@ -153,6 +164,7 @@ def update_highest_holywood_grossing_movie(session: Session,id_movie: int,info_m
         str_err = f'Ocurrió un error al actualizar HighestHolywoodGrossingMovie: {str(err)}.'
         logger.error(str_err)
         raise err
+
 
 def delete_highest_holywood_grossing_movie(session: Session,id_movie: int) -> [int, Exception]:
     '''

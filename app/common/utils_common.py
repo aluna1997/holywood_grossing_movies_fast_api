@@ -7,7 +7,10 @@ from fastapi import HTTPException
 from typing import Union
 from app.logger import configure_log
 from fastapi.responses import JSONResponse
-from common.globals_common import CONFIG_ROUTE
+from app.common.globals_common import CONFIG_ROUTE
+from datetime import datetime
+from app.common.globals_common import DELETE_OK
+from fastapi.responses import Response
 
 # Logger.
 logger = configure_log()
@@ -90,10 +93,32 @@ def verify_token(token: str = Depends(oauth2_scheme)) -> Union[str,Exception]:
         str_err = 'No existe token en archivo de configuración.'
         logger.error(str_err)
         raise Exception(str_err)
-
-def return_endpoint_response(pyndatic_obj,stataus_code,message,extras = {},ok = True):
-    if ok:
-        return JSONResponse(content={'message': message, **pyndatic_obj.dict(), **extras}, status_code=stataus_code)
+    
+def datetime_to_iso(dtime):
+    if isinstance(dtime,datetime):
+        return dtime.strftime('%d-%m-%Y %H:%M:%S')
     else:
-        raise HTTPException(status_code=stataus_code, detail=message)
+        str_err = 'El valor recibido no es de tipo datetime.'
+        logger.error(str_err)
+        raise Exception(str_err)
+    
+
+def return_endpoint_response(objs=[],stataus_code=None,message='',extras = {},ok = True):
+    logger.debug(stataus_code)
+    if ok:
+        if objs:
+            aux_objs = []
+            
+            for obj in objs:
+                aux_objs.append(obj.dict())
+            
+            return JSONResponse(content={'message': message,'status_code': stataus_code, 'objects': aux_objs, **extras}, status_code=stataus_code)
+        
+        else:
+            if stataus_code == DELETE_OK:
+                return Response(status_code=DELETE_OK)
+            else:
+                return JSONResponse(content={'message': message,'status_code': stataus_code, **extras}, status_code=stataus_code)
+    else:
+        return JSONResponse(content={'message': message,}, status_code=stataus_code)
     
