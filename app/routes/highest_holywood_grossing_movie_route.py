@@ -34,7 +34,7 @@ logger = configure_log()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Router from API.
-router = APIRouter(prefix='/v1')
+router = APIRouter(prefix='/v1/movies')
 
 @router.post("/highest_holywood_grossing_movie")
 def create_highest_holywood_grossing_movie_endpoint(token: str = Depends(verify_token), pydantic_highest_holywood_grossing_movie: PydanticHighestHolywoodGrossingMovie = None) -> Dict:
